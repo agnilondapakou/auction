@@ -54,4 +54,20 @@ describe("Lock", function () {
       expect(await auction.getCurrentPrice()).to.equal(1200);
     })
   })
+
+  describe("Buy token", function () {
+    it("Should buy the token", async function () {
+      const { auction, tokenInstance, seller, otherAccount } = await deployAuction();
+
+      await tokenInstance.mint(seller.address, 100000000);
+
+      await tokenInstance.connect(seller).approve(auction, 100000000);
+
+      await auction.startAuction();
+
+      await auction.connect(otherAccount).buyTokens();
+
+      expect(await tokenInstance.balanceOf(otherAccount.address)).to.equal(1000);
+    })
+  })
 });

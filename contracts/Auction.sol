@@ -64,7 +64,7 @@ contract Auction {
         require(!auctionEnded, "Auction already ended");
         
         uint256 currentPrice = getCurrentPrice();
-        require(currentPrice > 0, "Auction has ended with price zero");
+        require(currentPrice == 0, "Auction has ended with price zero");
         require(paymentToken.transferFrom(msg.sender, seller, currentPrice), "Payment transfer failed");
         require(token.transfer(msg.sender, amountForSale), "Token transfer failed");
         
