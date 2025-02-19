@@ -11,10 +11,10 @@ describe("Lock", function () {
   async function deployAuction() {
     const [seller, otherAccount] = await hre.ethers.getSigners();
 
-    const token = await hre.ethers.getContractFactory("OurIERC20");
-    const tokenInstance = await token.deploy();
+    const token = await hre.ethers.getContractFactory("OurERC20");
+    const tokenInstance = await token.deploy("PakouToken", "PKT");
 
-    const auction_duration = await time.duration.seconds(60 * 60 * 24 * 365); 
+    const auction_duration = time.duration.seconds(60 * 60 * 24 * 365); 
 
     const Auction = await hre.ethers.getContractFactory("Auction");
     const auction = await Auction.deploy(tokenInstance.target, seller.address, 1200, auction_duration, 10, 100000);
@@ -36,10 +36,11 @@ describe("Lock", function () {
 
   describe("Start auction", function () {
     it("Should start the auction", async function () {
-      const { auction, tokenInstance } = await deployAuction();
+      const { auction, tokenInstance, seller } = await deployAuction();
 
-      // mint tokens 
-      // await tokenInstance.mint(auction, 100000);
+      await tokenInstance.mint(seller.address, 100000000);
+
+      await tokenInstance.connect(seller).approve(auction, 100000000);
 
       await auction.startAuction();
       expect(auction.startTime).to.not.equal(0);
