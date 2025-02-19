@@ -5,7 +5,6 @@ import {
 import { anyValue } from "@nomicfoundation/hardhat-chai-matchers/withArgs";
 import { expect } from "chai";
 import hre from "hardhat";
-import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 
 describe("Lock", function () {
@@ -40,7 +39,7 @@ describe("Lock", function () {
       const { auction, tokenInstance } = await deployAuction();
 
       // mint tokens 
-      await tokenInstance.mint(auction, 100000);
+      // await tokenInstance.mint(auction, 100000);
 
       await auction.startAuction();
       expect(auction.startTime).to.not.equal(0);
