@@ -46,4 +46,12 @@ describe("Lock", function () {
       expect(auction.startTime).to.not.equal(0);
     })
   });
+
+  describe("Get current price", function() {
+    it("Should get the current price", async function () {
+      const { auction} = await deployAuction();
+
+      expect(await auction.getCurrentPrice()).to.equal(1200);
+    })
+  })
 });
